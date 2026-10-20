@@ -29,5 +29,17 @@ if [ -n "$OLLAMA_PULL_MODELS" ]; then
   ) &
 fi
 
+# Railway bills the page cache as RAM. While no model is loaded, drop the
+# cached model files so an idle server costs ~50 MB instead of the model size.
+(
+  while sleep 60; do
+    if ! OLLAMA_HOST=127.0.0.1:11434 ollama ps 2>/dev/null | tail -n +2 | grep -q .; then
+      for f in "$OLLAMA_MODELS"/blobs/*; do
+        dd if="$f" iflag=nocache count=0 status=none 2>/dev/null
+      done
+    fi
+  done
+) &
+
 # Exit as soon as Ollama or Caddy dies so Railway restarts the container.
 wait -n "$ollama_pid" "$caddy_pid"
