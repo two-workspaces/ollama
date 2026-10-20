@@ -5,5 +5,6 @@
   "category": "AI/ML",
   "image": "https://raw.githubusercontent.com/two-workspaces/ollama/main/icon.png",
   "card_desc": "Ollama: run open models like Llama, Qwen and Gemma on your own server. A slim CPU build tuned to Railway's vCPU quota, an API locked behind a Bearer token, and Open WebUI for chat.",
-  "id": "eb4c3906-dbd3-4a6d-9cd9-7bc6aef7559a"
+  "id": "eb4c3906-dbd3-4a6d-9cd9-7bc6aef7559a",
+  "published": true
 }
