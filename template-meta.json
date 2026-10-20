@@ -1,0 +1,8 @@
+{
+  "name": "Ollama | Private LLMs on CPU with Open WebUI and a Secured API",
+  "short_name": "Ollama Production",
+  "description": "Run open LLMs on CPU: slim Ollama, token-gated API, Open WebUI chat",
+  "category": "AI/ML",
+  "image": "https://raw.githubusercontent.com/two-workspaces/ollama/main/icon.png",
+  "card_desc": "Ollama: run open models like Llama, Qwen and Gemma on your own server. A slim CPU build tuned to Railway's vCPU quota, an API locked behind a Bearer token, and Open WebUI for chat."
+}

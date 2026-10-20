@@ -1,0 +1,23 @@
+{
+	admin off
+	auto_https off
+}
+
+:{$PORT} {
+	handle /healthz {
+		rewrite * /api/version
+		reverse_proxy 127.0.0.1:11434
+	}
+
+	@authed header Authorization "Bearer {$OLLAMA_API_KEY}"
+	handle @authed {
+		reverse_proxy 127.0.0.1:11434 {
+			flush_interval -1
+		}
+	}
+
+	handle {
+		header WWW-Authenticate "Bearer"
+		respond "Unauthorized: send Authorization: Bearer <OLLAMA_API_KEY>" 401
+	}
+}

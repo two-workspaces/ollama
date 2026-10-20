@@ -1,0 +1,9 @@
+#!/bin/sh
+# llama.cpp sizes its thread pool from the host's physical cores (24+ on
+# Railway), not the container's CPU quota. Pass the quota unless Ollama
+# already chose a thread count (num_thread option).
+case " $* " in
+  *" -t "*|*" --threads "*) ;;
+  *) set -- "$@" -t "$OLLAMA_NUM_THREADS" ;;
+esac
+exec /usr/lib/ollama/llama-server.real "$@"
