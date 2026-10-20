@@ -15,17 +15,19 @@ export OLLAMA_NUM_THREADS
 echo "Using $OLLAMA_NUM_THREADS CPU threads"
 
 ollama serve &
+ollama_pid=$!
 caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
+caddy_pid=$!
 
 if [ -n "$OLLAMA_PULL_MODELS" ]; then
   (
     until OLLAMA_HOST=127.0.0.1:11434 ollama list >/dev/null 2>&1; do sleep 1; done
     for m in ${OLLAMA_PULL_MODELS//,/ }; do
       echo "Pulling $m"
-      OLLAMA_HOST=127.0.0.1:11434 ollama pull "$m" >/dev/null && echo "Pulled $m" || echo "Pull of $m failed"
+      OLLAMA_HOST=127.0.0.1:11434 ollama pull "$m" >/dev/null 2>&1 && echo "Pulled $m" || echo "Pull of $m failed"
     done
   ) &
 fi
 
 # Exit as soon as Ollama or Caddy dies so Railway restarts the container.
-wait -n
+wait -n "$ollama_pid" "$caddy_pid"
